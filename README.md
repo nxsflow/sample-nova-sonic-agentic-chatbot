@@ -15,6 +15,18 @@ This is a demo application showcasing Nova Sonic capabilities using a Next.js fr
 - **Async Backend**: FastAPI-powered backend with async tool execution
 - **Barge-in Support**: For natural voice interactions
 
+## 🖥️ Interface
+
+The interface features two main control buttons:
+
+- **Power Button**: Establishes WebSocket connection with the backend
+- **Mic Button**: Starts/stops the Nova Sonic session for voice interaction
+
+**Usage Flow:**
+1. Click **Power** to connect to backend
+2. Click **Mic** to begin voice conversation with Nova Sonic
+3. Speak naturally - tool outputs appear in the display canvas
+
 ## 📁 Project Structure
 
 ```
