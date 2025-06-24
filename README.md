@@ -1,6 +1,6 @@
 # Nova Sonic Agentic Chatbot
 
-This is a demo application showcasing Nova Sonic capabilities using a Next.js frontend with a FastAPI backend. The project demonstrates modular tool integration, real-time audio features, and dynamic UI rendering in an AI-powered interface.
+This is a demo application showcasing Nova Sonic capabilities using a Next.js frontend with a FastAPI backend. The project demonstrates modular tool integration, real-time audio features, and dynamic UI rendering in a dynamic interface.
 
 <div align="center">
   <img src="docs/imgs/demo.gif" alt="Demo" width="600" loop="infinite">
@@ -10,10 +10,10 @@ This is a demo application showcasing Nova Sonic capabilities using a Next.js fr
 
 - **Modular Tool System**: Demonstrates extensible tool architecture
 - **Real-time Audio**: Audio capture and playback capabilities
-- **Rich UI Components**: Dynamic rendering of tool outputs (text, cards, images, videos, PDFs)
+- **UI Components**: Supports dynamic rendering of tool outputs (text, cards, images, videos, PDFs)
 - **Frontend**: Built with Next.js, TypeScript, and Tailwind CSS
 - **Async Backend**: FastAPI-powered backend with async tool execution
-- **Sample Components**: Pre-built UI components for user experience
+- **Barge-in Support**: For natural voice interactions
 
 ## 📁 Project Structure
 
@@ -234,7 +234,7 @@ __all__ = ['MyNewTool']
 
 ## 🎨 UI Components
 
-The system supports various UI component types:
+The system has some pre-built UI component types that can bee hooked up to tool responses (via ui_result):
 
 - **Text**: Simple text output
 - **Card**: Rich card with title, description, and details
