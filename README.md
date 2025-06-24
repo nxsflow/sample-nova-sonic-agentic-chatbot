@@ -3,7 +3,10 @@
 This is a demo application showcasing Nova Sonic capabilities using a Next.js frontend with a FastAPI backend. The project demonstrates modular tool integration, real-time audio features, and dynamic UI rendering in an AI-powered interface.
 
 <div align="center">
-  <img src="docs/imgs/demo.gif" alt="Demo" width="600">
+  <video width="800" autoplay muted loop>
+    <source src="docs/imgs/demo2.mp4" type="video/mp4">
+    Your browser does not support the video tag.
+  </video>
 </div>
 
 ## 🚀 Demo Features
