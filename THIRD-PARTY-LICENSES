@@ -29,6 +29,36 @@ This document lists the open source software libraries used in the Nova Sonic Ne
 - **Repository**: https://github.com/intxcc/pyaudio_portaudio
 - **Description**: Python bindings for PortAudio, a cross-platform audio I/O library
 
+### urllib3
+- **License**: MIT License
+- **Repository**: https://github.com/urllib3/urllib3
+- **Description**: HTTP library with thread-safe connection pooling, file post, and more
+
+### Smithy Core
+- **License**: Apache License 2.0
+- **Repository**: https://github.com/smithy-lang/smithy-python
+- **Description**: Transport-agnostic core modules and interfaces for building service clients
+
+### Smithy HTTP
+- **License**: Apache License 2.0
+- **Repository**: https://github.com/smithy-lang/smithy-python
+- **Description**: HTTP core modules and interfaces for building HTTP service clients
+
+### Smithy JSON
+- **License**: Apache License 2.0
+- **Repository**: https://github.com/smithy-lang/smithy-python
+- **Description**: JSON serialization and deserialization for Smithy clients
+
+### Smithy AWS Core
+- **License**: Apache License 2.0
+- **Repository**: https://github.com/smithy-lang/smithy-python
+- **Description**: AWS-specific implementations of Smithy core interfaces
+
+### Smithy AWS Event Stream
+- **License**: Apache License 2.0
+- **Repository**: https://github.com/smithy-lang/smithy-python
+- **Description**: AWS Event Stream support for Smithy clients
+
 ## Frontend Dependencies (JavaScript/TypeScript)
 
 ### React
@@ -101,9 +131,9 @@ This document lists the open source software libraries used in the Nova Sonic Ne
 
 ## License Types Summary
 
-- **MIT License**: FastAPI, Uvicorn, PyAudio, React, Next.js, Radix UI, Tailwind CSS, Framer Motion, clsx, Tailwind Merge, ESLint, PostCSS, tw-animate-css
+- **MIT License**: FastAPI, Uvicorn, PyAudio, urllib3, React, Next.js, Radix UI, Tailwind CSS, Framer Motion, clsx, Tailwind Merge, ESLint, PostCSS, tw-animate-css
 - **BSD 3-Clause License**: Uvicorn, WebSockets
-- **Apache License 2.0**: Python-multipart, TypeScript, Class Variance Authority
+- **Apache License 2.0**: Python-multipart, TypeScript, Class Variance Authority, Smithy Core, Smithy HTTP, Smithy JSON, Smithy AWS Core, Smithy AWS Event Stream
 - **ISC License**: Lucide React
 
 ## Notice
@@ -111,5 +141,3 @@ This document lists the open source software libraries used in the Nova Sonic Ne
 This project is a demonstration/sample application. All third-party libraries are used in accordance with their respective licenses. For complete license texts, please refer to the individual repositories listed above.
 
 ---
-
-**Note**: This list includes major dependencies. For a complete list of all transitive dependencies and their licenses, please run dependency analysis tools on the respective package managers (pip for Python, npm for Node.js). 
