@@ -1,4 +1,4 @@
-# Nova Sonic - Next.js + FastAPI Demo
+# Nova Sonic Agentic Chatbot
 
 This is a demo application showcasing Nova Sonic capabilities using a Next.js frontend with a FastAPI backend. The project demonstrates modular tool integration, real-time audio features, and dynamic UI rendering in an AI-powered interface.
 
@@ -7,9 +7,9 @@ This is a demo application showcasing Nova Sonic capabilities using a Next.js fr
 - **Modular Tool System**: Demonstrates extensible tool architecture
 - **Real-time Audio**: Audio capture and playback capabilities
 - **Rich UI Components**: Dynamic rendering of tool outputs (text, cards, images, videos, PDFs)
-- **Modern Frontend**: Built with Next.js, TypeScript, and Tailwind CSS
+- **Frontend**: Built with Next.js, TypeScript, and Tailwind CSS
 - **Async Backend**: FastAPI-powered backend with async tool execution
-- **Component Library**: Pre-built UI components for consistent user experience
+- **Sample Components**: Pre-built UI components for user experience
 
 ## 📁 Project Structure
 
@@ -66,7 +66,7 @@ nova-sonic-demo/
 
 4. **Run the backend server:**
    ```bash
-   uvicorn main:app --reload --host 0.0.0.0 --port 8000
+   python main.py
    ```
 
 ### Debug Audio Configuration
@@ -78,13 +78,13 @@ The application includes an optional debug audio recording feature for developme
 **To enable debug audio recording:**
 ```bash
 export SAVE_DEBUG_AUDIO=true
-uvicorn main:app --reload --host 0.0.0.0 --port 8000
+python main.py
 ```
 
 **To explicitly disable debug audio recording:**
 ```bash
 export SAVE_DEBUG_AUDIO=false
-uvicorn main:app --reload --host 0.0.0.0 --port 8000
+python main.py
 ```
 
 **Audio files are saved to:**
@@ -141,21 +141,21 @@ The tool system demonstrates a modular architecture where each tool:
 ## 🔧 Demo Tools
 
 ### Utility Tools
-- **DateAndTimeTool**: Current date and time information
+- **DateAndTimeTool**: Current date and time information (Ask chatbot: What is the date today?)
 
 ### Media Tools
-- **SampleImageTool**: Image processing and display
+- **SampleImageTool**: Image processing and display (Ask chatbot: Show me a sample image)
 - **SamplePdfTool**: PDF document handling
 - **SampleVideoTool**: Video content management
 
 ### Order Tools
-- **TrackOrderTool**: Order tracking and status updates
+- **TrackOrderTool**: Order tracking and status updates (Ask chatbot: what is the status of order 2345?)
 
 ## 📚 Adding New Tools
 
 ### 1. Create Tool Class
 
-Create a new tool in the appropriate category:
+Create a new tool in the appropriate category folder:
 
 ```python
 from typing import Dict, Any
