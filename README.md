@@ -4,7 +4,7 @@ This is a demo application showcasing Nova Sonic capabilities using a Next.js fr
 
 <div align="center">
   <video width="600" autoplay muted loop>
-    <source src="docs/imgs/demo.mov" type="video/mp4">
+    <source src="docs/imgs/demo.mov" type="video/quicktime">
     Your browser does not support the video tag.
   </video>
 </div>
