@@ -1,17 +1,235 @@
-## My Project
+# Nova Sonic - Next.js + FastAPI Demo
 
-TODO: Fill this README out!
+This is a demo application showcasing Nova Sonic capabilities using a Next.js frontend with a FastAPI backend. The project demonstrates modular tool integration, real-time audio features, and dynamic UI rendering in an AI-powered interface.
 
-Be sure to:
+## 🚀 Demo Features
 
-* Change the title in this README
-* Edit your repository description on GitHub
+- **Modular Tool System**: Demonstrates extensible tool architecture
+- **Real-time Audio**: Audio capture and playback capabilities
+- **Rich UI Components**: Dynamic rendering of tool outputs (text, cards, images, videos, PDFs)
+- **Modern Frontend**: Built with Next.js, TypeScript, and Tailwind CSS
+- **Async Backend**: FastAPI-powered backend with async tool execution
+- **Component Library**: Pre-built UI components for consistent user experience
 
-## Security
+## 📁 Project Structure
 
-See [CONTRIBUTING](CONTRIBUTING.md#security-issue-notifications) for more information.
+```
+nova-sonic-demo/
+├── backend/                 # Python FastAPI backend
+│   ├── api/                # API endpoints and apps
+│   ├── tools/              # Modular tool system
+│   │   ├── base/           # Base classes and registry
+│   │   ├── categories/     # Tool categories
+│   │   │   ├── utility/    # Utility tools
+│   │   │   ├── media/      # Media processing tools
+│   │   │   └── order/      # Order management tools
+│   │   └── tool_manager.py # Tool registration and management
+│   ├── main.py             # FastAPI application entry point
+│   └── requirements.txt    # Python dependencies
+├── frontend/               # Next.js frontend
+│   ├── app/               # Next.js app directory
+│   ├── components/        # React components
+│   │   ├── ui/           # Base UI components
+│   │   ├── tool-outputs/ # Tool result components
+│   │   └── apps/         # Application components
+│   ├── lib/              # Utility functions
+│   ├── public/           # Static assets
+│   └── package.json      # Node.js dependencies
+└── README.md             # Project documentation
+```
 
-## License
+## 🛠️ Setup and Installation
 
-This library is licensed under the MIT-0 License. See the LICENSE file.
+### Prerequisites
 
+- **Python 3.8+**
+- **Node.js 18+**
+- **npm or yarn**
+
+### Backend Setup
+
+1. **Navigate to backend directory:**
+   ```bash
+   cd backend
+   ```
+
+2. **Create virtual environment:**
+   ```bash
+   python -m venv venv
+   source venv/bin/activate  # On Windows: venv\Scripts\activate
+   ```
+
+3. **Install dependencies:**
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+4. **Run the backend server:**
+   ```bash
+   uvicorn main:app --reload --host 0.0.0.0 --port 8000
+   ```
+
+### Debug Audio Configuration
+
+The application includes an optional debug audio recording feature for development and troubleshooting purposes.
+
+**Default Behavior:** Audio recording is **disabled** by default.
+
+**To enable debug audio recording:**
+```bash
+export SAVE_DEBUG_AUDIO=true
+uvicorn main:app --reload --host 0.0.0.0 --port 8000
+```
+
+**To explicitly disable debug audio recording:**
+```bash
+export SAVE_DEBUG_AUDIO=false
+uvicorn main:app --reload --host 0.0.0.0 --port 8000
+```
+
+**Audio files are saved to:**
+- **Input audio:** `backend/debug_audio/input_YYYYMMDD_HHMMSS.wav` (16kHz, 16-bit)
+- **Output audio:** `backend/debug_audio/output_YYYYMMDD_HHMMSS.wav` (24kHz, 16-bit)
+
+**Note:** Debug audio files are created per session and automatically timestamped. This feature is useful for debugging audio quality issues or analyzing conversation flows.
+
+### Frontend Setup
+
+1. **Navigate to frontend directory:**
+   ```bash
+   cd frontend
+   ```
+
+2. **Install dependencies:**
+   ```bash
+   npm install
+   ```
+
+3. **Run the development server:**
+   ```bash
+   npm run dev
+   ```
+
+4. **Access the application:**
+   Open [http://localhost:3000](http://localhost:3000) in your browser
+
+## 🏗️ Architecture
+
+### Backend Architecture
+
+- **FastAPI Framework**: High-performance async web framework
+- **Tool Registry**: Dynamic tool discovery and registration system
+- **Category-based Organization**: Tools organized by functionality
+- **Async Execution**: Non-blocking tool execution with proper error handling
+
+### Frontend Architecture
+
+- **Next.js 14**: React framework with App Router
+- **TypeScript**: Type-safe development
+- **Tailwind CSS**: Utility-first CSS framework
+- **Component-based**: Modular UI components for tool outputs
+- **Real-time Features**: Audio capture and playback capabilities
+
+### Tool System
+
+The tool system demonstrates a modular architecture where each tool:
+- Inherits from `BaseTool` base class
+- Defines its own configuration schema
+- Implements async execution logic
+- Returns structured UI-ready results
+
+## 🔧 Demo Tools
+
+### Utility Tools
+- **DateAndTimeTool**: Current date and time information
+
+### Media Tools
+- **SampleImageTool**: Image processing and display
+- **SamplePdfTool**: PDF document handling
+- **SampleVideoTool**: Video content management
+
+### Order Tools
+- **TrackOrderTool**: Order tracking and status updates
+
+## 📚 Adding New Tools
+
+### 1. Create Tool Class
+
+Create a new tool in the appropriate category:
+
+```python
+from typing import Dict, Any
+from ...base.tool import BaseTool
+
+class MyNewTool(BaseTool):
+    def __init__(self):
+        super().__init__()
+        self.config = {
+            "name": "myNewTool",
+            "description": "Tool description for Nova Sonic",
+            "schema": {
+                "type": "object",
+                "properties": {
+                    "param1": {
+                        "type": "string",
+                        "description": "Parameter description"
+                    }
+                },
+                "required": ["param1"]
+            }
+        }
+
+    async def execute(self, content: Dict[str, Any]) -> Dict[str, Any]:
+        try:
+            # Tool logic here
+            result = {"data": "processed"}
+            
+            return self.format_response(
+                model_result=result,
+                ui_result={
+                    "type": "card",
+                    "content": {
+                        "title": "Result",
+                        "description": "Tool output"
+                    }
+                }
+            )
+        except Exception as e:
+            return self.format_response(
+                {"error": str(e)},
+                {"type": "text", "content": {"title": "Error", "message": str(e)}}
+            )
+```
+
+### 2. Register Tool
+
+Add your tool to `backend/tools/tool_manager.py`:
+
+```python
+from .categories.utility import MyNewTool
+
+# In _initialize_registry method:
+self.registry.register_tools([
+    MyNewTool(),
+    # ... other tools
+])
+```
+
+### 3. Update Category Exports
+
+Update the category's `__init__.py`:
+
+```python
+from .my_new_tool import MyNewTool
+__all__ = ['MyNewTool']
+```
+
+## 🎨 UI Components
+
+The system supports various UI component types:
+
+- **Text**: Simple text output
+- **Card**: Rich card with title, description, and details
+- **Image**: Image display with metadata
+- **Video**: Embedded video content
+- **PDF**: PDF document viewer
