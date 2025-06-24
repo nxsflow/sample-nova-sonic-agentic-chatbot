@@ -14,7 +14,7 @@ This is a demo application showcasing Nova Sonic capabilities using a Next.js fr
 ## 📁 Project Structure
 
 ```
-nova-sonic-demo/
+sample-nova-sonic-agentic-chatbot
 ├── backend/                 # Python FastAPI backend
 │   ├── api/                # API endpoints and apps
 │   ├── tools/              # Modular tool system
@@ -50,7 +50,7 @@ nova-sonic-demo/
 
 1. **Navigate to backend directory:**
    ```bash
-   cd backend
+   cd sample-nova-sonic-agentic-chatbot/backend
    ```
 
 2. **Create virtual environment:**
@@ -97,7 +97,7 @@ python main.py
 
 1. **Navigate to frontend directory:**
    ```bash
-   cd frontend
+   cd sample-nova-sonic-agentic-chatbot/frontend
    ```
 
 2. **Install dependencies:**
