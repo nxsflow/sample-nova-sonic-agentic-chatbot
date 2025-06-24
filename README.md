@@ -2,6 +2,8 @@
 
 This is a demo application showcasing Nova Sonic capabilities using a Next.js frontend with a FastAPI backend. The project demonstrates modular tool integration, real-time audio features, and dynamic UI rendering in an AI-powered interface.
 
+![Demo](docs/imgs/demo.gif)
+
 ## 🚀 Demo Features
 
 - **Modular Tool System**: Demonstrates extensible tool architecture
