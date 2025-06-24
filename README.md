@@ -140,7 +140,11 @@ The tool system demonstrates a modular architecture where each tool:
 - Inherits from `BaseTool` base class
 - Defines its own configuration schema
 - Implements async execution logic
-- Returns structured UI-ready results
+- Returns **dual results**: `model_result` and `ui_result`
+
+**Dual Result Architecture:**
+- **`model_result`**: Sent back to Nova Sonic for context and conversation flow
+- **`ui_result`**: Sent to frontend with `type` field determining how content is displayed (cards, images, text, etc.)
 
 ## 🔧 Demo Tools
 
@@ -189,9 +193,9 @@ class MyNewTool(BaseTool):
             result = {"data": "processed"}
             
             return self.format_response(
-                model_result=result,
-                ui_result={
-                    "type": "card",
+                model_result=result,              # Goes to Nova Sonic
+                ui_result={                       # Goes to frontend UI
+                    "type": "card",               # UI component type
                     "content": {
                         "title": "Result",
                         "description": "Tool output"
