@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef } from "react";
 
 interface AudioCaptureMediaRecorderProps {
   websocket: WebSocket | null;
@@ -15,21 +15,29 @@ function floatTo16BitPCM(input: Float32Array): Int16Array {
   const output = new Int16Array(input.length);
   for (let i = 0; i < input.length; i++) {
     const s = Math.max(-1, Math.min(1, input[i]));
-    output[i] = s < 0 ? s * 0x8000 : s * 0x7FFF;
+    output[i] = s < 0 ? s * 0x8000 : s * 0x7fff;
   }
   return output;
 }
 
 // Utility: Encode Int16Array to base64
 function int16ToBase64(int16: Int16Array): string {
-  let binary = '';
+  let binary = "";
   for (let i = 0; i < int16.length; i++) {
     binary += String.fromCharCode(int16[i] & 0xff, (int16[i] >> 8) & 0xff);
   }
   return btoa(binary);
 }
 
-export default function AudioCaptureMediaRecorder({ websocket, isCapturing, onError, inline, setIsThinking, promptName, contentName }: AudioCaptureMediaRecorderProps) {
+export default function AudioCaptureMediaRecorder({
+  websocket,
+  isCapturing,
+  onError,
+  inline,
+  setIsThinking,
+  promptName,
+  contentName,
+}: AudioCaptureMediaRecorderProps) {
   const mediaRecorderRef = useRef<MediaRecorder | null>(null);
   const audioChunksRef = useRef<Blob[]>([]);
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -45,7 +53,7 @@ export default function AudioCaptureMediaRecorder({ websocket, isCapturing, onEr
   const visualize = (stream: MediaStream) => {
     if (!canvasRef.current) return;
     const canvas = canvasRef.current;
-    const ctx = canvas.getContext('2d');
+    const ctx = canvas.getContext("2d");
     if (!ctx) return;
     const audioContext = new AudioContext();
     audioContextRef.current = audioContext;
@@ -60,10 +68,10 @@ export default function AudioCaptureMediaRecorder({ websocket, isCapturing, onEr
 
     const draw = () => {
       analyser.getByteTimeDomainData(dataArray);
-      ctx.fillStyle = '#fff';
+      ctx.fillStyle = "#fff";
       ctx.fillRect(0, 0, canvas.width, canvas.height);
       ctx.lineWidth = 2;
-      ctx.strokeStyle = '#000';
+      ctx.strokeStyle = "#000";
       ctx.beginPath();
       const sliceWidth = canvas.width / bufferLength;
       let x = 0;
@@ -90,19 +98,24 @@ export default function AudioCaptureMediaRecorder({ websocket, isCapturing, onEr
     let processor: ScriptProcessorNode | null = null;
     sentAudioRef.current = false;
     if (isCapturing) {
-      navigator.mediaDevices.getUserMedia({ audio: {
-        echoCancellation: true,
-        noiseSuppression: true,
-        autoGainControl: true
-      } })
+      navigator.mediaDevices
+        .getUserMedia({
+          audio: {
+            echoCancellation: true,
+            noiseSuppression: true,
+            autoGainControl: true,
+          },
+        })
         .then((mediaStream) => {
           stream = mediaStream;
           streamRef.current = mediaStream;
           visualize(mediaStream);
 
           // --- Real-time streaming with ScriptProcessorNode ---
-          const AudioCtx = window.AudioContext ? window.AudioContext : (window as any).webkitAudioContext;
-          audioContext = new AudioCtx({ latencyHint: 'interactive' });
+          const AudioCtx = window.AudioContext
+            ? window.AudioContext
+            : (window as any).webkitAudioContext;
+          audioContext = new AudioCtx({ latencyHint: "interactive" });
           if (audioContext) {
             audioContextRef.current = audioContext;
             const source = audioContext.createMediaStreamSource(mediaStream);
@@ -127,25 +140,27 @@ export default function AudioCaptureMediaRecorder({ websocket, isCapturing, onEr
                     audioInput: {
                       promptName,
                       contentName,
-                      content: base64
-                    }
-                  }
+                      content: base64,
+                    },
+                  },
                 };
                 websocket.send(JSON.stringify(eventObj));
                 sentAudioRef.current = true;
-                console.log('[MediaRecorder] Sent audio chunk', eventObj);
+                console.log("[MediaRecorder] Sent audio chunk", eventObj);
               }
             };
           }
 
           // --- Session recording with MediaRecorder (optional) ---
-          const mediaRecorder = new MediaRecorder(mediaStream, { mimeType: 'audio/webm' });
+          const mediaRecorder = new MediaRecorder(mediaStream, {
+            mimeType: "audio/webm",
+          });
           mediaRecorderRef.current = mediaRecorder;
           audioChunksRef.current = [];
 
           mediaRecorder.onstart = () => {
             setIsThinking(true);
-            console.log('[MediaRecorder] Recording started');
+            console.log("[MediaRecorder] Recording started");
           };
 
           mediaRecorder.ondataavailable = (event) => {
@@ -157,7 +172,11 @@ export default function AudioCaptureMediaRecorder({ websocket, isCapturing, onEr
           mediaRecorder.onstop = () => {
             setIsThinking(false);
             // If no audio was sent, send a short silent buffer
-            if (!sentAudioRef.current && websocket && websocket.readyState === WebSocket.OPEN) {
+            if (
+              !sentAudioRef.current &&
+              websocket &&
+              websocket.readyState === WebSocket.OPEN
+            ) {
               const silentPCM = new Int16Array(1600); // 100ms of silence at 16kHz
               const base64 = int16ToBase64(silentPCM);
               const eventObj = {
@@ -165,17 +184,20 @@ export default function AudioCaptureMediaRecorder({ websocket, isCapturing, onEr
                   audioInput: {
                     promptName,
                     contentName,
-                    content: base64
-                  }
-                }
+                    content: base64,
+                  },
+                },
               };
               websocket.send(JSON.stringify(eventObj));
-              console.log('[MediaRecorder] Sent fallback silent audio chunk', eventObj);
+              console.log(
+                "[MediaRecorder] Sent fallback silent audio chunk",
+                eventObj
+              );
             }
             audioChunksRef.current = [];
             // Clean up
             if (stream) {
-              stream.getTracks().forEach(track => track.stop());
+              stream.getTracks().forEach((track) => track.stop());
             }
             if (audioContextRef.current) {
               audioContextRef.current.close();
@@ -197,11 +219,11 @@ export default function AudioCaptureMediaRecorder({ websocket, isCapturing, onEr
               processorRef.current.disconnect();
               processorRef.current = null;
             }
-            console.log('[MediaRecorder] Recording stopped and cleaned up');
+            console.log("[MediaRecorder] Recording stopped and cleaned up");
           };
 
           mediaRecorder.onerror = (e) => {
-            onError(e.error || new Error('MediaRecorder error'));
+            onError(e.error || new Error("MediaRecorder error"));
           };
 
           mediaRecorder.start();
@@ -210,7 +232,10 @@ export default function AudioCaptureMediaRecorder({ websocket, isCapturing, onEr
     }
     return () => {
       // Stop recording and clean up
-      if (mediaRecorderRef.current && mediaRecorderRef.current.state !== 'inactive') {
+      if (
+        mediaRecorderRef.current &&
+        mediaRecorderRef.current.state !== "inactive"
+      ) {
         mediaRecorderRef.current.stop();
       }
       if (processorRef.current) {
@@ -218,7 +243,7 @@ export default function AudioCaptureMediaRecorder({ websocket, isCapturing, onEr
         processorRef.current = null;
       }
       if (streamRef.current) {
-        streamRef.current.getTracks().forEach(track => track.stop());
+        streamRef.current.getTracks().forEach((track) => track.stop());
         streamRef.current = null;
       }
       if (audioContextRef.current) {
@@ -243,9 +268,20 @@ export default function AudioCaptureMediaRecorder({ websocket, isCapturing, onEr
   return (
     <canvas
       ref={canvasRef}
-      className={inline ? 'w-full h-6 bg-white' : 'w-full h-24 bg-white rounded'}
-      style={inline ? { background: 'transparent', borderRadius: 1, border: '0px solid #eee', width: '50px' } : {}}
+      className={
+        inline ? "w-full h-6 bg-white" : "w-full h-24 bg-white rounded"
+      }
+      style={
+        inline
+          ? {
+              background: "transparent",
+              borderRadius: 1,
+              border: "0px solid #eee",
+              width: "50px",
+            }
+          : {}
+      }
       aria-label="Audio Visualizer"
     />
   );
-} 
+}
