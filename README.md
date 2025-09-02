@@ -23,6 +23,7 @@ The interface features two main control buttons:
 - **Mic Button**: Starts/stops the Nova Sonic session for voice interaction
 
 **Usage Flow:**
+
 1. Click **Power** to connect to backend
 2. Click **Mic** to begin voice conversation with Nova Sonic
 3. Speak naturally - tool outputs appear in the display canvas
@@ -65,24 +66,27 @@ sample-nova-sonic-agentic-chatbot
 ### Backend Setup
 
 1. **Navigate to backend directory:**
+
    ```bash
    cd sample-nova-sonic-agentic-chatbot/backend
    ```
 
 2. **Create virtual environment:**
+
    ```bash
-   python -m venv venv
+   python3.12 -m venv venv
    source venv/bin/activate  # On Windows: venv\Scripts\activate
    ```
 
 3. **Install dependencies:**
+
    ```bash
    pip install -r requirements.txt
    ```
 
 4. **Run the backend server:**
    ```bash
-   python main.py
+   python3.12 main.py
    ```
 
 ### Debug Audio Configuration
@@ -92,18 +96,21 @@ The application includes an optional debug audio recording feature for developme
 **Default Behavior:** Audio recording is **disabled** by default.
 
 **To enable debug audio recording:**
+
 ```bash
 export SAVE_DEBUG_AUDIO=true
 python main.py
 ```
 
 **To explicitly disable debug audio recording:**
+
 ```bash
 export SAVE_DEBUG_AUDIO=false
 python main.py
 ```
 
 **Audio files are saved to:**
+
 - **Input audio:** `backend/debug_audio/input_YYYYMMDD_HHMMSS.wav` (16kHz, 16-bit)
 - **Output audio:** `backend/debug_audio/output_YYYYMMDD_HHMMSS.wav` (24kHz, 16-bit)
 
@@ -112,16 +119,19 @@ python main.py
 ### Frontend Setup
 
 1. **Navigate to frontend directory:**
+
    ```bash
    cd sample-nova-sonic-agentic-chatbot/frontend
    ```
 
 2. **Install dependencies:**
+
    ```bash
    npm install
    ```
 
 3. **Run the development server:**
+
    ```bash
    npm run dev
    ```
@@ -149,26 +159,31 @@ python main.py
 ### Tool System
 
 The tool system demonstrates a modular architecture where each tool:
+
 - Inherits from `BaseTool` base class
 - Defines its own configuration schema
 - Implements async execution logic
 - Returns **dual results**: `model_result` and `ui_result`
 
 **Dual Result Architecture:**
+
 - **`model_result`**: Sent back to Nova Sonic for context and conversation flow
 - **`ui_result`**: Sent to frontend with `type` field determining how content is displayed (cards, images, text, etc.)
 
 ## 🔧 Demo Tools
 
 ### Utility Tools
+
 - **DateAndTimeTool**: Current date and time information (Ask chatbot: What is the date today?)
 
 ### Media Tools
+
 - **SampleImageTool**: Image processing and display (Ask chatbot: Show me a sample image)
 - **SamplePdfTool**: PDF document handling
 - **SampleVideoTool**: Video content management
 
 ### Order Tools
+
 - **TrackOrderTool**: Order tracking and status updates (Ask chatbot: what is the status of order 2345?)
 
 ## 📚 Adding New Tools
@@ -203,7 +218,7 @@ class MyNewTool(BaseTool):
         try:
             # Tool logic here
             result = {"data": "processed"}
-            
+
             return self.format_response(
                 model_result=result,              # Goes to Nova Sonic
                 ui_result={                       # Goes to frontend UI
